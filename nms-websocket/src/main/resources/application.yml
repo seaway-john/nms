@@ -1,0 +1,18 @@
+server:
+  port: 8093
+  shutdown: graceful
+spring:
+  rabbitmq:
+    host: 172.0.1.170
+    port: 5672
+    username: admin
+    password: 123456
+    listener:
+      direct:
+        retry:
+          enabled: true
+          max-attempts: 5
+      simple:
+        retry:
+          enabled: true
+          max-attempts: 5

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script src="http://cdn.jsdelivr.net/sockjs/1/sockjs.min.js"></script>
+<script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.min.js"></script>
+<script type="application/javascript">
+    let stompClient = null;
+
+    function connect() {
+        let token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1OTAxMzkyNjYsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiIsIlJPTEVfR1VFU1QiXSwianRpIjoiZTg1ZGE4ZjctYTZkMi00Njk2LWFhN2QtZTczMDBlMTdkZjI3IiwiY2xpZW50X2lkIjoibm1zLWNsaWVudC0wMS1hZG1pbiIsInNjb3BlIjpbIm5tcy1jbGllbnQtMDEiXX0.kDt8zR-qFzZ9hSl1ibATVs_z3Ji0tl3XrlpwhXUw88o';
+        let socket = new SockJS('http://localhost:8090/api-websocket/websocket?token=' + token);
+        stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, onConnected, onError);
+    }
+
+    function onConnected() {
+        stompClient.subscribe('/topo', function (payload) {
+            console.log("receive topo");
+
+            let topo = JSON.parse(payload.body);
+
+            console.log(topo);
+        });
+
+        stompClient.subscribe('/snmp-trap', function (payload) {
+            console.log("receive SNMP Trap");
+
+            let snmpTrap = JSON.parse(payload.body);
+
+            console.log(snmpTrap);
+        });
+    }
+
+
+    function onError(error) {
+        console.error("onError: " + error);
+    }
+
+    connect();
+</script>
+</body>
+</html>

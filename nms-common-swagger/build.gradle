@@ -1,0 +1,10 @@
+bootJar.enabled = false
+jar.enabled = true
+
+dependencies {
+    implementation project(':nms-common')
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
+
+    implementation 'io.springfox:springfox-swagger2:2.9.2'
+}

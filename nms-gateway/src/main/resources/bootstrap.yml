@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: nms-gateway
+  cloud:
+    consul:
+      host: 172.0.1.170
+      port: 8500
+      discovery:
+        hostname: 192.168.158.91
+        service-name: ${spring.application.name}
+        tags: urlprefix-/${spring.application.name}
+        instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}
+        health-check-path: /actuator/health
+        health-check-interval: 10s
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: nms-admin
+          uri: lb://nms-admin
+          predicates:
+            - Path=/api-admin/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
+        - id: nms-manager
+          uri: lb://nms-manager
+          predicates:
+            - Path=/api-manager/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
+        - id: nms-websocket
+          uri: lb://nms-websocket
+          predicates:
+            - Path=/api-websocket/**
+          filters:
+            - StripPrefix=1

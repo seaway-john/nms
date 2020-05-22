@@ -1,0 +1,10 @@
+rootProject.name = 'nms'
+
+include 'nms-admin'
+include 'nms-common'
+include 'nms-common-mq'
+include 'nms-common-swagger'
+include 'nms-gateway'
+include 'nms-manager'
+include 'nms-websocket'
+

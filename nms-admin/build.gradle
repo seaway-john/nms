@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(':nms-common')
+    implementation project(':nms-common-swagger')
+
+    // Security
+    implementation 'org.springframework.cloud:spring-cloud-starter-security'
+    implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
+}
