@@ -1,13 +1,16 @@
 package com.oem.nms.common.swagger.config;
 
+import com.oem.nms.common.entity.request.RequestInfo;
 import com.oem.nms.common.entity.response.Response;
 import com.oem.nms.common.entity.response.ResponseCode;
 import com.oem.nms.common.exception.ConflictException;
 import com.oem.nms.common.exception.ForbiddenException;
 import com.oem.nms.common.exception.UnauthorizedException;
-import com.oem.nms.common.swagger.entity.RequestInfo;
+import com.oem.nms.common.mq.entity.LogMessageLevel;
+import com.oem.nms.common.mq.service.MqSender;
 import com.oem.nms.common.swagger.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -22,6 +25,13 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RestControllerAdvice
 public class ApiExceptionHandler {
+
+    private final MqSender mqSender;
+
+    @Autowired
+    public ApiExceptionHandler(MqSender mqSender) {
+        this.mqSender = mqSender;
+    }
 
     @ExceptionHandler(WebClientResponseException.BadRequest.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -56,7 +66,8 @@ public class ApiExceptionHandler {
     private Response<String> handle(HttpServletRequest request, Exception e, ResponseCode responseCode) {
         RequestInfo requestInfo = HttpUtil.convert(request);
 
-        log.warn("Handle {}, ip {}, username {}, reason {}", e.getClass().getSimpleName(), requestInfo.getIp(), requestInfo.getUsername(), e.getMessage());
+        String message = String.format("Catch %s, reason %s", e.getClass().getSimpleName(), e.getMessage());
+        mqSender.sendLog(requestInfo, LogMessageLevel.ERROR, message);
 
         return new Response<>(responseCode, e.getMessage());
     }

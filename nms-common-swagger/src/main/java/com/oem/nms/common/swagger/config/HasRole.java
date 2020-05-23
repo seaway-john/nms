@@ -14,4 +14,6 @@ public @interface HasRole {
 
     RoleType role();
 
+    boolean log() default true;
+
 }

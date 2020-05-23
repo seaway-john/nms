@@ -19,24 +19,24 @@ import org.springframework.stereotype.Component;
 @RabbitListener(
         bindings = @QueueBinding(
                 exchange = @Exchange(value = MqConstants.MQ_EXCHANGE_WEBSOCKET, type = ExchangeTypes.DIRECT, autoDelete = "false"),
-                key = MqConstants.MQ_ROUTING_KEY_WEBSOCKET_SNMP_TRAP,
-                value = @Queue(value = MqConstants.MQ_QUEUE_WEBSOCKET_SNMP_TRAP, autoDelete = "false")
+                key = MqConstants.MQ_ROUTING_KEY_WEBSOCKET_TOPO,
+                value = @Queue(value = MqConstants.MQ_QUEUE_WEBSOCKET_TOPO, autoDelete = "false")
         )
 )
-public class SnmpTrapMqReceiver {
+public class TopoMqReceiver {
 
     private final SimpMessageSendingOperations messagingTemplate;
 
     @Autowired
-    public SnmpTrapMqReceiver(SimpMessageSendingOperations messagingTemplate) {
+    public TopoMqReceiver(SimpMessageSendingOperations messagingTemplate) {
         this.messagingTemplate = messagingTemplate;
     }
 
     @RabbitHandler
     public void handle(WebsocketMessage websocketMessage) {
-        log.info("Receive snmp trap mq {}", websocketMessage);
+        log.info("Receive topo mq {}", websocketMessage);
 
-        messagingTemplate.convertAndSend(WebsocketConstants.WEBSOCKET_TOPIC_SNMP_TRAP, JsonUtil.toJson(websocketMessage));
+        messagingTemplate.convertAndSend(WebsocketConstants.WEBSOCKET_TOPIC_TOPO, JsonUtil.toJson(websocketMessage));
     }
 
 }

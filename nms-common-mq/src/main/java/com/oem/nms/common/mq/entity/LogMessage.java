@@ -14,15 +14,21 @@ import java.util.UUID;
 @Getter
 @Setter
 @ToString
-public class WebsocketMessage implements Serializable {
+public class LogMessage implements Serializable {
 
     private String id;
+
+    private String ip;
+
+    private String username;
+
+    private LogMessageLevel level;
 
     private String message;
 
     private LocalDateTime createdTime;
 
-    public WebsocketMessage() {
+    public LogMessage() {
         this.id = UUID.randomUUID().toString();
         this.createdTime = LocalDateTime.now();
     }

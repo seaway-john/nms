@@ -1,8 +1,7 @@
-package com.oem.nms.manager.controller;
+package com.oem.nms.log.controller;
 
 import com.oem.nms.common.entity.db.admin.RoleType;
 import com.oem.nms.common.entity.response.Response;
-import com.oem.nms.common.mq.service.MqSender;
 import com.oem.nms.common.swagger.config.HasRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,25 +17,11 @@ import java.util.List;
  */
 @Slf4j
 @RestController
-@RequestMapping("/topo")
-public class TopoController {
-
-    private final MqSender mqSender;
+@RequestMapping("/log")
+public class LogController {
 
     @Autowired
-    public TopoController(MqSender mqSender) {
-        this.mqSender = mqSender;
-    }
-
-    @GetMapping("/test")
-    public int test() {
-        for (int i = 0; i < 1000; i++) {
-            String message = String.format("TopoController test %d", i);
-
-            mqSender.sendTopo(message);
-        }
-
-        return 1;
+    public LogController() {
     }
 
     @HasRole(role = RoleType.ROLE_USER, log = false)

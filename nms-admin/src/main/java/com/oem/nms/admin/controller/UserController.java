@@ -4,10 +4,7 @@ import com.oem.nms.common.entity.db.admin.RoleType;
 import com.oem.nms.common.entity.response.Response;
 import com.oem.nms.common.swagger.config.HasRole;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,12 +22,38 @@ public class UserController {
         return 0;
     }
 
-    @HasRole(role = RoleType.ROLE_ADMIN)
+    @HasRole(role = RoleType.ROLE_ADMIN, log = false)
     @GetMapping("/id/{id}")
     public Response<Map<String, String>> getById(@PathVariable String id) {
         log.info("getById id {}", id);
 
         return new Response<>(new HashMap<>(8));
+    }
+
+    @HasRole(role = RoleType.ROLE_ADMIN)
+    @PostMapping
+    public Response<String> add(@RequestBody Map<String, String> user) {
+        return new Response<>("success");
+    }
+
+    @HasRole(role = RoleType.ROLE_ADMIN)
+    @PatchMapping("/id/{id}")
+    public Response<String> updateById(@PathVariable String id,
+                                       @RequestBody Map<String, String> user) {
+        return new Response<>("success");
+    }
+
+    @HasRole(role = RoleType.ROLE_ADMIN)
+    @DeleteMapping("/id/{id}")
+    public Response<String> deleteById(@PathVariable String id) {
+        return new Response<>("success");
+    }
+
+    @HasRole(role = RoleType.ROLE_ADMIN)
+    @PatchMapping("/enable/id/{id}")
+    public Response<String> triggerById(@PathVariable String id,
+                                        @RequestParam(required = false, defaultValue = "true") boolean enable) {
+        return new Response<>("success");
     }
 
 }

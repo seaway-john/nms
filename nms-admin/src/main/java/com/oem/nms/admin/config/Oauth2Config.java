@@ -31,7 +31,7 @@ public class Oauth2Config extends AuthorizationServerConfigurerAdapter {
     private static final String OAUTH2_CLIENT_01_USERNAME = "nms-client-01-admin";
     private static final String OAUTH2_CLIENT_01_PASSWORD = "nms-client-01-123456";
 
-    private static final String OAUTH2_CLIENT_02_SCOPE = "nms-client-02-me";
+    private static final String OAUTH2_CLIENT_02_SCOPE = "nms-client-02";
     private static final String OAUTH2_CLIENT_02_USERNAME = "nms-client-02-admin";
     private static final String OAUTH2_CLIENT_02_PASSWORD = "nms-client-02-123456";
 
