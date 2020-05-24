@@ -2,7 +2,7 @@ package com.oem.nms.manager.controller;
 
 import com.oem.nms.common.entity.db.admin.RoleType;
 import com.oem.nms.common.entity.response.Response;
-import com.oem.nms.common.mq.service.MqSender;
+import com.oem.nms.common.mq.service.MqWebSocketSender;
 import com.oem.nms.common.swagger.config.HasRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +21,11 @@ import java.util.List;
 @RequestMapping("/topo")
 public class TopoController {
 
-    private final MqSender mqSender;
+    private final MqWebSocketSender mqWebSocketSender;
 
     @Autowired
-    public TopoController(MqSender mqSender) {
-        this.mqSender = mqSender;
+    public TopoController(MqWebSocketSender mqWebSocketSender) {
+        this.mqWebSocketSender = mqWebSocketSender;
     }
 
     @GetMapping("/test")
@@ -33,7 +33,7 @@ public class TopoController {
         for (int i = 0; i < 1000; i++) {
             String message = String.format("TopoController test %d", i);
 
-            mqSender.sendTopo(message);
+            mqWebSocketSender.sendTopo(message);
         }
 
         return 1;

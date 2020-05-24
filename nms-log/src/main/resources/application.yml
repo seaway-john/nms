@@ -7,12 +7,16 @@ spring:
     port: 5672
     username: admin
     password: 123456
+    publisher-confirm-type: correlated #选择确认类型为交互,必须配置这个才会确认回调
+    publisher-returns: true #消息从交换器发送到对应队列失败时触发callback
     listener:
-      direct:
-        retry:
-          enabled: true
-          max-attempts: 5
+      type: simple
       simple:
+        acknowledge-mode: manual
+        default-requeue-rejected: true #监听器抛出异常而拒绝的消息,会被重新放回队列
         retry:
           enabled: true
           max-attempts: 5
+        prefetch: 1 #限制每次消费消息数
+        concurrency: 3 #同一个队列启动消费者数
+        max-concurrency: 3 #启动消费者最大数量

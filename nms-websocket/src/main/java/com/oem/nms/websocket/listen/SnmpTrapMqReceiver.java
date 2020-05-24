@@ -1,28 +1,24 @@
 package com.oem.nms.websocket.listen;
 
-import com.oem.nms.common.mq.entity.WebsocketMessage;
+import com.oem.nms.common.entity.response.Response;
 import com.oem.nms.common.mq.util.MqConstants;
-import com.oem.nms.common.util.JsonUtil;
+import com.oem.nms.common.mq.util.MqUtil;
 import com.oem.nms.websocket.util.WebsocketConstants;
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.WebSocketMessage;
 
 /**
  * @author Seaway John
  */
 @Slf4j
 @Component
-@RabbitListener(
-        bindings = @QueueBinding(
-                exchange = @Exchange(value = MqConstants.MQ_EXCHANGE_WEBSOCKET, type = ExchangeTypes.DIRECT, autoDelete = "false"),
-                key = MqConstants.MQ_ROUTING_KEY_WEBSOCKET_SNMP_TRAP,
-                value = @Queue(value = MqConstants.MQ_QUEUE_WEBSOCKET_SNMP_TRAP, autoDelete = "false")
-        )
-)
 public class SnmpTrapMqReceiver {
 
     private final SimpMessageSendingOperations messagingTemplate;
@@ -33,10 +29,15 @@ public class SnmpTrapMqReceiver {
     }
 
     @RabbitHandler
-    public void handle(WebsocketMessage websocketMessage) {
-        log.info("Receive snmp trap mq {}", websocketMessage);
+    @RabbitListener(queues = MqConstants.MQ_QUEUE_WEBSOCKET_SNMP_TRAP)
+    public void handle(Message message, Channel channel) {
+        Response<WebSocketMessage> response = MqUtil.handle(message, channel);
+        if (response.isError()) {
+            log.warn("Error in handle mq snmp trap: {}", response.getMessage());
+            return;
+        }
 
-        messagingTemplate.convertAndSend(WebsocketConstants.WEBSOCKET_TOPIC_SNMP_TRAP, JsonUtil.toJson(websocketMessage));
+        messagingTemplate.convertAndSend(WebsocketConstants.WEBSOCKET_TOPIC_SNMP_TRAP, response.getData());
     }
 
 }

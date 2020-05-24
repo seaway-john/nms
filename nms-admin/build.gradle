@@ -6,4 +6,8 @@ dependencies {
     // Security
     implementation 'org.springframework.cloud:spring-cloud-starter-security'
     implementation 'org.springframework.cloud:spring-cloud-starter-oauth2'
+
+    // java 8以上的java ee是模块化，默认移除javax的模块
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.3'
+
 }

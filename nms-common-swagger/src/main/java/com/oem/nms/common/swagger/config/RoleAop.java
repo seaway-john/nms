@@ -3,7 +3,7 @@ package com.oem.nms.common.swagger.config;
 import com.oem.nms.common.entity.request.RequestInfo;
 import com.oem.nms.common.exception.ForbiddenException;
 import com.oem.nms.common.mq.entity.LogMessageLevel;
-import com.oem.nms.common.mq.service.MqSender;
+import com.oem.nms.common.mq.service.MqLogSender;
 import com.oem.nms.common.swagger.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -29,11 +29,11 @@ import java.lang.reflect.Method;
 @Component
 public class RoleAop {
 
-    private final MqSender mqSender;
+    private final MqLogSender mqLogSender;
 
     @Autowired
-    public RoleAop(MqSender mqSender) {
-        this.mqSender = mqSender;
+    public RoleAop(MqLogSender mqLogSender) {
+        this.mqLogSender = mqLogSender;
     }
 
     @Pointcut("@annotation(com.oem.nms.common.swagger.config.HasRole)")
@@ -75,7 +75,7 @@ public class RoleAop {
             }
 
             String message = String.format("%s %s in %s#%s, query %s, body %s", method, uri, className, methodName, query, sb.toString());
-            mqSender.sendLog(requestInfo, LogMessageLevel.INFO, message);
+            mqLogSender.send(requestInfo, LogMessageLevel.INFO, message);
         }
 
         return point.proceed();

@@ -23,7 +23,6 @@ public class Response<T> {
     private T data;
 
     private Response() {
-        this.error = true;
     }
 
     public Response(T data) {

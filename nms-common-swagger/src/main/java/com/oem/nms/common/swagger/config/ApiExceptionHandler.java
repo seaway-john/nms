@@ -7,7 +7,7 @@ import com.oem.nms.common.exception.ConflictException;
 import com.oem.nms.common.exception.ForbiddenException;
 import com.oem.nms.common.exception.UnauthorizedException;
 import com.oem.nms.common.mq.entity.LogMessageLevel;
-import com.oem.nms.common.mq.service.MqSender;
+import com.oem.nms.common.mq.service.MqLogSender;
 import com.oem.nms.common.swagger.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +26,11 @@ import javax.servlet.http.HttpServletRequest;
 @RestControllerAdvice
 public class ApiExceptionHandler {
 
-    private final MqSender mqSender;
+    private final MqLogSender mqLogSender;
 
     @Autowired
-    public ApiExceptionHandler(MqSender mqSender) {
-        this.mqSender = mqSender;
+    public ApiExceptionHandler(MqLogSender mqLogSender) {
+        this.mqLogSender = mqLogSender;
     }
 
     @ExceptionHandler(WebClientResponseException.BadRequest.class)
@@ -67,7 +67,7 @@ public class ApiExceptionHandler {
         RequestInfo requestInfo = HttpUtil.convert(request);
 
         String message = String.format("Catch %s, reason %s", e.getClass().getSimpleName(), e.getMessage());
-        mqSender.sendLog(requestInfo, LogMessageLevel.ERROR, message);
+        mqLogSender.send(requestInfo, LogMessageLevel.ERROR, message);
 
         return new Response<>(responseCode, e.getMessage());
     }

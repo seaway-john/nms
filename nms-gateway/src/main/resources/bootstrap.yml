@@ -24,6 +24,13 @@ spring:
           filters:
             - SwaggerHeaderFilter
             - StripPrefix=1
+        - id: nms-log
+          uri: lb://nms-log
+          predicates:
+            - Path=/api-log/**
+          filters:
+            - SwaggerHeaderFilter
+            - StripPrefix=1
         - id: nms-manager
           uri: lb://nms-manager
           predicates:

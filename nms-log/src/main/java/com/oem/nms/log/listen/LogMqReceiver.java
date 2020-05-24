@@ -1,10 +1,14 @@
 package com.oem.nms.log.listen;
 
+import com.oem.nms.common.entity.response.Response;
 import com.oem.nms.common.mq.entity.LogMessage;
 import com.oem.nms.common.mq.util.MqConstants;
+import com.oem.nms.common.mq.util.MqUtil;
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.ExchangeTypes;
-import org.springframework.amqp.rabbit.annotation.*;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitHandler;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,13 +17,6 @@ import org.springframework.stereotype.Component;
  */
 @Slf4j
 @Component
-@RabbitListener(
-        bindings = @QueueBinding(
-                exchange = @Exchange(value = MqConstants.MQ_EXCHANGE_LOG, type = ExchangeTypes.DIRECT, autoDelete = "false"),
-                key = MqConstants.MQ_ROUTING_KEY_LOG,
-                value = @Queue(value = MqConstants.MQ_QUEUE_LOG, autoDelete = "false")
-        )
-)
 public class LogMqReceiver {
 
     @Autowired
@@ -27,8 +24,15 @@ public class LogMqReceiver {
     }
 
     @RabbitHandler
-    public void handle(LogMessage logMessage) {
-        log.info("Receive log mq {}", logMessage);
+    @RabbitListener(queues = MqConstants.MQ_QUEUE_LOG)
+    public void handle(Message message, Channel channel) {
+        Response<LogMessage> response = MqUtil.handle(message, channel);
+        if (response.isError()) {
+            log.warn("Error in handle mq snmp trap: {}", response.getMessage());
+            return;
+        }
+
+        // TODO: 2020-05-24
     }
 
 }
