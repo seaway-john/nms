@@ -2,8 +2,8 @@ package com.oem.nms.common.swagger.config;
 
 import com.oem.nms.common.entity.request.RequestInfo;
 import com.oem.nms.common.exception.ForbiddenException;
-import com.oem.nms.common.mq.entity.LogMessageLevel;
-import com.oem.nms.common.mq.service.MqLogSender;
+import com.oem.nms.common.rabbitmq.entity.LogMessageLevel;
+import com.oem.nms.common.rabbitmq.service.MqLogSender;
 import com.oem.nms.common.swagger.util.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;

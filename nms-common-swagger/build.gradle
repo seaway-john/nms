@@ -3,7 +3,7 @@ jar.enabled = true
 
 dependencies {
     implementation project(':nms-common')
-    implementation project(':nms-common-mq')
+    implementation project(':nms-common-rabbitmq')
 
     compile 'org.springframework.boot:spring-boot-starter-web'
 

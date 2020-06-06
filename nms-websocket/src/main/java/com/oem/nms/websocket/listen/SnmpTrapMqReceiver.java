@@ -1,8 +1,8 @@
 package com.oem.nms.websocket.listen;
 
 import com.oem.nms.common.entity.response.Response;
-import com.oem.nms.common.mq.util.MqConstants;
-import com.oem.nms.common.mq.util.MqUtil;
+import com.oem.nms.common.rabbitmq.util.MqConstants;
+import com.oem.nms.common.rabbitmq.util.MqUtil;
 import com.oem.nms.websocket.util.WebsocketConstants;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;

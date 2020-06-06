@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 version=$(awk -F ' ' '$1=="version" {print $2}' ../../../../build.gradle | sed "s/'//g")
 project=$(awk -F : '$1=="    name" {print $2}' ../resources/application.yml | sed -e 's/^[ \t]*//g' -e 's/[ \t]*$//g')
 port=$(awk -F : '$1=="  port" {print $2}' ../resources/application.yml | sed -e 's/^[ \t]*//g' -e 's/[ \t]*$//g')

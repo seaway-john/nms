@@ -1,0 +1,7 @@
+bootJar.enabled = false
+jar.enabled = true
+
+dependencies {
+    compile 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+    compile 'org.apache.commons:commons-pool2'
+}

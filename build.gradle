@@ -7,6 +7,7 @@ plugins {
 allprojects {
     group = 'com.oem'
     version = '1.0.0'
+    sourceCompatibility = '11'
 
     ext {
         set('springCloudVersion', 'Hoxton.SR4')
@@ -23,8 +24,6 @@ subprojects {
     apply plugin: 'idea'
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
-
-    sourceCompatibility = '11'
 
     configurations {
         compileOnly {

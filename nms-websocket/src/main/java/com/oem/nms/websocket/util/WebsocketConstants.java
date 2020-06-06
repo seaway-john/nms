@@ -10,7 +10,6 @@ public class WebsocketConstants {
     public static final String WEBSOCKET_TOPIC_SNMP_TRAP = "/snmp-trap";
     public static final String WEBSOCKET_TOPIC_TOPO = "/topo";
 
-
     private WebsocketConstants() {
     }
 

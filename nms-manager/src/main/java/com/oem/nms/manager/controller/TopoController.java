@@ -2,7 +2,7 @@ package com.oem.nms.manager.controller;
 
 import com.oem.nms.common.entity.db.admin.RoleType;
 import com.oem.nms.common.entity.response.Response;
-import com.oem.nms.common.mq.service.MqWebSocketSender;
+import com.oem.nms.common.rabbitmq.service.MqWebSocketSender;
 import com.oem.nms.common.swagger.config.HasRole;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

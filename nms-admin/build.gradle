@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':nms-common')
-    //implementation project(':nms-common-mq')
+    //implementation project(':nms-common-rabbitmq')
     implementation project(':nms-common-swagger')
 
     // Security

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 project=$(awk -F : '$1=="    name" {print $2}' ../resources/application.yml | sed -e 's/^[ \t]*//g' -e 's/[ \t]*$//g')
 
 cd ../../../

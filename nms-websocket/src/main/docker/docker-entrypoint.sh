@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 wait_for() {
   echo "Checking $1 to listen port $2..."
   while ! nc -z $1 $2; do

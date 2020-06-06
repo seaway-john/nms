@@ -1,0 +1,109 @@
+version: '3'
+services:
+  oem-nms-admin:
+    image: oem/nms-admin:latest
+    container_name: oem-nms-admin
+    restart: always
+    expose:
+      - 8091
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+    depends_on:
+      - oem-nms-mysql
+      - oem-nms-rabbitmq
+      - oem-nms-redis
+      - oem-nms-discovery
+
+  oem-nms-discovery:
+    image: oem/nms-discovery:latest
+    container_name: oem-nms-discovery
+    restart: always
+    ports:
+      - 8500:8500
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+
+  oem-nms-gateway:
+    image: oem/nms-gateway:latest
+    container_name: oem-nms-gateway
+    restart: always
+    expose:
+      - 8090
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+    depends_on:
+      - oem-nms-discovery
+
+  oem-nms-manager:
+    image: oem/nms-manager:latest
+    container_name: oem-nms-manager
+    restart: always
+    expose:
+      - 8082
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+    depends_on:
+      - oem-nms-mongo
+      - oem-nms-redis
+      - oem-nms-discovery
+
+  oem-nms-mysql:
+    image: oem/nms-mysql:latest
+    container_name: oem-nms-mysql
+    restart: always
+    expose:
+      - 3306
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - /opt/oem-nms/mysql/data/db:/data/db
+
+  oem-nms-mongo:
+    image: oem/nms-mongo:latest
+    container_name: oem-nms-mongo
+    restart: always
+    expose:
+      - 27017
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - /opt/oem-nms/mongo/data/db:/data/db
+
+  oem-nms-rabbitmq:
+    image: oem/nms-rabbitmq:latest
+    container_name: oem-nms-rabbitmq
+    restart: always
+    expose:
+      - 6379
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - /opt/oem-nms/rabbitmq/data:/data
+
+  oem-nms-redis:
+    image: oem/nms-redis:latest
+    container_name: oem-nms-redis
+    restart: always
+    expose:
+      - 6379
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+      - /opt/oem-nms/redis/data:/data
+
+  oem-nms-ui:
+    image: oem/nms-ui:latest
+    container_name: oem-nms-ui
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - /etc/localtime:/etc/localtime
+      - /etc/timezone:/etc/timezone
+    depends_on:
+      - oem-nms-gateway

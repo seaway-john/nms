@@ -3,10 +3,10 @@ spring:
     name: nms-admin
   cloud:
     consul:
-      host: localhost
+      host: 172.0.1.170
       port: 8500
       discovery:
-        hostname: 192.168.0.104
+        hostname: 192.168.158.91
         service-name: ${spring.application.name}
         tags: urlprefix-/${spring.application.name}
         instance-id: ${spring.application.name}:${vcap.application.instance_id:${spring.application.instance_id:${random.value}}}

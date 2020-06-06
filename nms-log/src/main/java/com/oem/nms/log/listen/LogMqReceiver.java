@@ -1,9 +1,9 @@
 package com.oem.nms.log.listen;
 
 import com.oem.nms.common.entity.response.Response;
-import com.oem.nms.common.mq.entity.LogMessage;
-import com.oem.nms.common.mq.util.MqConstants;
-import com.oem.nms.common.mq.util.MqUtil;
+import com.oem.nms.common.rabbitmq.entity.LogMessage;
+import com.oem.nms.common.rabbitmq.util.MqConstants;
+import com.oem.nms.common.rabbitmq.util.MqUtil;
 import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
